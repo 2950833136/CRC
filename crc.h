@@ -2,33 +2,48 @@
 #define __CRC_H__
 #include "type.h"
 
-typedef struct
-{
-	u8   Poly;				//¶àÏîÊ½
-	u8   InitValue;			//³õÊ¼Öµ
-	u8   XorOut;			//½á¹ûÒì»òÖµ
-	bool InputReverse;		//£¨ÊÇ·ñ£©ÊäÈë·´×ª
-	bool OutputReverse;		//£¨ÊÇ·ñ£©Êä³ö·´×ª
+/*****************************************************************************
+*function: å®šä¹‰ç»“æ„ä½“ 
+*type	 : 8
+******************************************************************************/
+typedef struct {
+	u8   Poly;			//å¤šé¡¹å¼
+	u8   InitValue;			//åˆå§‹å€¼
+	u8   XorOut;			//ç»“æœå¼‚æˆ–å€¼
+	bool InputReverse;		//ï¼ˆæ˜¯å¦ï¼‰è¾“å…¥åè½¬
+	bool OutputReverse;		//ï¼ˆæ˜¯å¦ï¼‰è¾“å‡ºåè½¬
 }CRC_8;
-
-typedef struct
-{
-	u16  Poly;				//¶àÏîÊ½
-	u16  InitValue;			//³õÊ¼Öµ
-	u16  XorOut;			//½á¹ûÒì»òÖµ
-	bool InputReverse;		//£¨ÊÇ·ñ£©ÊäÈë·´×ª
-	bool OutputReverse;		//£¨ÊÇ·ñ£©Êä³ö·´×ª
+/*****************************************************************************
+*function: å®šä¹‰ç»“æ„ä½“ 
+*type	 : 16
+******************************************************************************/
+typedef struct {
+	u16  Poly;			//å¤šé¡¹å¼
+	u16  InitValue;			//åˆå§‹å€¼
+	u16  XorOut;			//ç»“æœå¼‚æˆ–å€¼
+	bool InputReverse;		//ï¼ˆæ˜¯å¦ï¼‰è¾“å…¥åè½¬
+	bool OutputReverse;		//ï¼ˆæ˜¯å¦ï¼‰è¾“å‡ºåè½¬
 }CRC_16;
-
-typedef struct
-{
-	u32  Poly;				//¶àÏîÊ½
-	u32  InitValue;			//³õÊ¼Öµ
-	u32  XorOut;			//½á¹ûÒì»òÖµ
-	bool InputReverse;		//£¨ÊÇ·ñ£©ÊäÈë·´×ª
-	bool OutputReverse;		//£¨ÊÇ·ñ£©Êä³ö·´×ª
+/*****************************************************************************
+*function: å®šä¹‰å„ç§ç±»å‹çš„ç»“æ„ä½“ 
+*type	 : 32
+******************************************************************************/
+typedef struct {
+	u32  Poly;			//å¤šé¡¹å¼
+	u32  InitValue;			//åˆå§‹å€¼
+	u32  XorOut;			//ç»“æœå¼‚æˆ–å€¼
+	bool InputReverse;		//ï¼ˆæ˜¯å¦ï¼‰è¾“å…¥åè½¬
+	bool OutputReverse;		//ï¼ˆæ˜¯å¦ï¼‰è¾“å‡ºåè½¬
 }CRC_32;
 
+/*****************************************************************************
+*function: å¸¸è§ CRC å‚æ•°æ¨¡å‹ï¼ˆ16è¿›åˆ¶ï¼‰ 
+*first	 : å¤šé¡¹å¼ 
+*second  : åˆå§‹å€¼ 
+*third   : ç»“æœå¼‚æˆ–å€¼ 
+*fourth  : è¾“å…¥åè½¬ 
+*fifth   : è¾“å‡ºåè½¬ 
+******************************************************************************/
 const CRC_8 crc_8 = { 0x07,0x00,0x00,FALSE,FALSE };
 const CRC_8 crc_8_ITU = { 0x07,0x00,0x55,FALSE,FALSE };
 const CRC_8 crc_8_EBU = { 0x1D,0xff,0x00,FALSE,FALSE };
@@ -66,7 +81,6 @@ const CRC_16 crc_16_TELEDISK = { 0xA097,0x0000,0x0000,FALSE,FALSE };
 const CRC_16 crc_16_AUG_CCITT = { 0x1021,0x1D0F,0x0000,FALSE,FALSE };
 const CRC_16 crc_16_CCITT_FALSE = { 0x1021,0xffff,0x0000,FALSE,FALSE };
 
-
 const CRC_32 crc_32 = { 0x04c11db7,0xffffffff,0xffffffff,TRUE,TRUE };
 const CRC_32 crc_32_C = { 0x1EDC6F41,0xFFFFFFFF,0xFFFFFFFF,TRUE,TRUE };
 const CRC_32 crc_32_D = { 0xA833982B,0xFFFFFFFF,0xFFFFFFFF,TRUE,TRUE };
@@ -77,10 +91,20 @@ const CRC_32 crc_32_BZIP2 = { 0x04C11DB7,0xFFFFFFFF,0xFFFFFFFF,FALSE,FALSE };
 const CRC_32 crc_32_POSIX = { 0x04C11DB7,0x00000000 ,0xFFFFFFFF,FALSE,FALSE };
 const CRC_32 crc_32_JAMCRC = { 0x04C11DB7,0xFFFFFFFF,0x00000000,TRUE,TRUE };
 
-
+/*****************************************************************************
+*function: CRC å‡½æ•°å£°æ˜
+*type	 : crc8/crc16/crc32 
+******************************************************************************/
 u8 crc8(u8* addr, int num, CRC_8 type);
 u16 crc16(u8* addr, int num, CRC_16 type);
 u32 crc32(u8* addr, int num, CRC_32 type);
 
+/*****************************************************************************
+*function: åè½¬å‡½æ•°å£°æ˜
+*type	 : reverse8/reverse16/reverse32 
+******************************************************************************/
+u8 reverse8(u8 data);
+u16 reverse16(u16 data);
+u32 reverse32(u32 data);
 
 #endif
