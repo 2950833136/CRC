@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "type.h"
-#include "CRC.h"
+#include "crc.h"
 
 /*****************************************************************************
 *function name:reverse8
