@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <malloc.h>
 #include "type.h"
-#include "CRC.h"
+#include "crc.h"
 
 /*****************************************************************************
 *explain: 8 bit数据 
