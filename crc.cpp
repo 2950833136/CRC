@@ -3,11 +3,12 @@
 #include <stdio.h>
 
 /*****************************************************************************
-*function name:reverse8
-*function: 字节反转，如1100 0101 反转后为1010 0011
-*input：1字节
-*output:反转后字节
-******************************************************************************/
+* @brief : 8 bit反转，如1100 0101 反转后为1010 0011
+* @param : 
+*   data : 8 bit
+* @return: 
+*   temp : 反转后的 8 bit
+*****************************************************************************/
 u8 reverse8(u8 data) {
     u8 i;
     u8 temp = 0;
@@ -18,10 +19,11 @@ u8 reverse8(u8 data) {
     return temp;
 }
 /*****************************************************************************
-*function name:reverse16
-*function: 双字节反转，如1100 0101 1110 0101反转后为1010 0111 1010 0011
-*input：双字节
-*output:反转后双字节
+* @brief : 16 bit反转，如1100 0101 1110 0101反转后为1010 0111 1010 0011
+* @param : 
+*   data : 16 bit
+* @return: 
+*   temp : 反转后的 16 bit
 ******************************************************************************/
 u16 reverse16(u16 data) {
     u8  i;
@@ -32,10 +34,11 @@ u16 reverse16(u16 data) {
     return temp;
 }
 /*****************************************************************************
-*function name:reverse32
-*function: 32bit字反转
-*input：32bit字
-*output:反转后32bit字
+* @brief : 32 bit 反转
+* @param : 
+*   data : 32 bit
+* @return: 
+*   temp : 反转后的 16 bit
 ******************************************************************************/
 u32 reverse32(u32 data) {
     u8  i;
@@ -47,10 +50,13 @@ u32 reverse32(u32 data) {
 }
 
 /*****************************************************************************
-*function name:crc8
-*function: CRC校验，校验值为8位
-*input:addr-数据首地址；num-数据长度（字节）；type-CRC8的算法类型
-*output:8位校验值
+* @brief : CRC 校验，校验值为 8 位
+* @param : 
+*   addr : 数据首地址
+*   num  : 数据长度（字节）
+*   type : CRC8 的算法类型
+* @return: 
+*   crc  : 8 位校验值
 ******************************************************************************/
 u8 crc8(u8* addr, int num, CRC_8 type) {
     u8  data;
@@ -61,8 +67,8 @@ u8 crc8(u8* addr, int num, CRC_8 type) {
         if (type.InputReverse == TRUE) {
             data = reverse8(data);
         }
-        crc = crc ^ data; //与crc初始值异或
-        //循环8位
+        //与crc初始值异或
+        crc = crc ^ data;
         for (i = 0; i < 8; i++) {
             //左移移出的位为1，左移后与多项式异或
             if (crc & 0x80) {
@@ -72,17 +78,22 @@ u8 crc8(u8* addr, int num, CRC_8 type) {
             }
         }
     }
-    if (type.OutputReverse == TRUE) //满足条件，反转
+    //满足条件，反转
+    if (type.OutputReverse == TRUE) {
         crc = reverse8(crc);
+    }
     crc = crc ^ type.XorOut; //最后返与结果异或值异或
     return (crc);            //返回最终校验值
 }
 
 /*****************************************************************************
-*function name:crc16
-*function: CRC校验，校验值为16位
-*input:addr-数据首地址；num-数据长度（字节）；type-CRC16的算法类型
-*output:16位校验值
+* @brief : CRC 校验，校验值为 16 位
+* @param : 
+*   addr : 数据首地址
+*   num  : 数据长度（字节）
+*   type : CRC16 的算法类型
+* @return: 
+*   crc  : 16 位校验值
 ******************************************************************************/
 u16 crc16(u8* addr, int num, CRC_16 type) {
     u8  data;
@@ -90,27 +101,35 @@ u16 crc16(u8* addr, int num, CRC_16 type) {
     int i;
     for (; num > 0; num--) {
         data = *addr++;
-        if (type.InputReverse == TRUE)
-            data = reverse8(data); //字节反转
-        crc = crc ^ (data << 8);   //与crc初始值高8位异或
-        for (i = 0; i < 8; i++)    //循环8位
-        {
-            if (crc & 0x8000) //左移移出的位为1，左移后与多项式异或
+        if (type.InputReverse == TRUE) {
+            data = reverse8(data);
+        }
+        //与crc初始值高8位异或
+        crc = crc ^ (data << 8);
+        for (i = 0; i < 8; i++) {
+            //左移移出的位为1，左移后与多项式异或
+            if (crc & 0x8000) {
                 crc = (crc << 1) ^ type.Poly;
-            else //否则直接左移
+            } else {
                 crc <<= 1;
+            }
         }
     }
-    if (type.OutputReverse == TRUE) //满足条件，反转
+    //满足条件，反转
+    if (type.OutputReverse == TRUE) {
         crc = reverse16(crc);
+    }
     crc = crc ^ type.XorOut; //最后返与结果异或值异或
     return (crc);            //返回最终校验值
 }
 /*****************************************************************************
-*function name:crc32
-*function: CRC校验，校验值为32位
-*input:addr-数据首地址；num-数据长度（字节）；type-CRC32的算法类型
-*output:32位校验值
+* @brief : CRC 校验，校验值为 32 位
+* @param : 
+*   addr : 数据首地址
+*   num  : 数据长度（字节）
+*   type : CRC32 的算法类型
+* @return: 
+*   crc  : 32 位校验值
 ******************************************************************************/
 u32 crc32(u8* addr, int num, CRC_32 type) {
     u8  data;
@@ -118,19 +137,24 @@ u32 crc32(u8* addr, int num, CRC_32 type) {
     int i;
     for (; num > 0; num--) {
         data = *addr++;
-        if (type.InputReverse == TRUE)
-            data = reverse8(data); //字节反转
-        crc = crc ^ (data << 24);  //与crc初始值高8位异或
-        for (i = 0; i < 8; i++)    //循环8位
-        {
-            if (crc & 0x80000000) //左移移出的位为1，左移后与多项式异或
+        if (type.InputReverse == TRUE) {
+            data = reverse8(data);
+        }
+        // 与crc初始值高8位异或
+        crc = crc ^ (data << 24);
+        for (i = 0; i < 8; i++) {
+            // 左移移出的位为1，左移后与多项式异或
+            if (crc & 0x80000000) {
                 crc = (crc << 1) ^ type.Poly;
-            else //否则直接左移
+            } else {
                 crc <<= 1;
+            }
         }
     }
-    if (type.OutputReverse == TRUE) //满足条件，反转
+    //满足条件，反转
+    if (type.OutputReverse == TRUE) {
         crc = reverse32(crc);
+    }
     crc = crc ^ type.XorOut; //最后返与结果异或值异或
     return (crc);            //返回最终校验值
 }
