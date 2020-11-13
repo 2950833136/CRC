@@ -1,4 +1,4 @@
-CC = g++
+CC = gcc
 
 main: main.o crc.o
 	$(CC) main.o crc.o -o main
